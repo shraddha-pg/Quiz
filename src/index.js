@@ -206,7 +206,6 @@ const showscore = document.getElementById('showscore');
 const correct = document.getElementById('score');
 const wrong = document.getElementById('error');
 const user = document.getElementById('name');
-let playCount = [];
 let nam = '';
 let score = 0;
 let error = 0;
@@ -224,10 +223,24 @@ window.addEventListener("DOMContentLoaded", function(){
     opt1.textContent = choice.option1;
     opt2.textContent = choice.option2;
     opt3.textContent = choice.option3;
-    nam = prompt('Enter your name');
-    user.textContent = `Name: ${nam}`;
+    nam = askName();
     console.log(nam)
 })
+
+function askName() {
+    let username = sessionStorage.getItem('username');
+    onpage = true;
+    if (username === null) {
+        username = prompt("To make your time on this website better, please enter your name.");
+    }
+
+    if (username != null) {
+        user.innerHTML = "Name:" + username;
+        sessionStorage.setItem('username', username);
+    }else{
+        user.innerHTML = "Name: anonymous"; 
+    }
+}
 
 // Event listener for the options
 opt1.addEventListener('click',function(){
@@ -249,25 +262,11 @@ opt3.addEventListener('click',function(){
     document.getElementById('opt3').disabled = true;
 })
 
-// Function to check weather the answer is correct or wrong
-// function correctAnswer(a){
-//     let valuesArray = Object.values(questions);
-//     let ans = a;
-//     for (let value of valuesArray) {
-//         if(ans === value.answer){
-//             document.getElementById('next').disabled = false;
-//             score++;
-//             console.log(score);
-//         }
-//     }
-    
-// }
 
 // Function for the next question
 let counter = 0;
 next.onclick = (function outer() {
     return function inner() {
-        let userdb = []
         let c =  Math.floor(Math.random() * questions.length);
         let choice = questions[c];
         img.src = choice.img;
@@ -281,7 +280,7 @@ next.onclick = (function outer() {
         document.getElementById('opt3').disabled = false;
         counter++;
         if(counter === 5){
-            showscore.innerHTML = `<h3>${nam}Your score is: ${score}🥳</h3>
+            showscore.innerHTML = `<h3>Your score is: ${score}🥳</h3>
             <h3>Your Errors are:${error}❌</h3>
             <button class="btn" onclick="location.reload(true)">Play again</button>`;
             showscore.classList.remove('scorearea');
@@ -292,6 +291,7 @@ next.onclick = (function outer() {
         }
     };
 })();
+
 
 function errors(a){
     let ans = a;
