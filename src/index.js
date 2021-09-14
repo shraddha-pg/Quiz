@@ -224,7 +224,7 @@ window.addEventListener("DOMContentLoaded", function(){
     opt1.textContent = choice.option1;
     opt2.textContent = choice.option2;
     opt3.textContent = choice.option3;
-    // nam = prompt('Enter your name');
+    nam = prompt('Enter your name');
     user.textContent = `Name: ${nam}`;
     console.log(nam)
 })
