@@ -206,6 +206,16 @@ const showscore = document.getElementById('showscore');
 const correct = document.getElementById('score');
 const wrong = document.getElementById('error');
 const user = document.getElementById('name');
+const show = document.querySelector('.show');
+let  usernam = document.getElementById('usernam');
+const head = document.getElementById('head');
+const data = document.querySelector('.data');
+const label = document.querySelector('.label');
+const d = new Date();
+let h = d.getHours();
+let m = d.getMinutes();
+let s = d.getSeconds();
+let time = `${h}:${m}:${s}`;
 let nam = '';
 let score = 0;
 let error = 0;
@@ -213,10 +223,7 @@ let currentItem = 0;
 let userSelection = ""
 let id = null;
 
-
-
-// When loads for the 1st time
-window.addEventListener("DOMContentLoaded", function(){
+function setData(){
     let choice = questions[currentItem];
     img.src = choice.img;
     quest.textContent = choice.questions;
@@ -224,46 +231,44 @@ window.addEventListener("DOMContentLoaded", function(){
     opt2.textContent = choice.option2;
     opt3.textContent = choice.option3;
     nam = askName();
-    console.log(nam)
-})
+    questArea.classList.remove('hide');
+    show.classList.add('hide');
+}
 
 function askName() {
     let username = sessionStorage.getItem('username');
     onpage = true;
-    if (username === null) {
-        username = prompt(" Please enter your name.");
+    if ( username === null) {
+        username = document.getElementById('usernam').value;
     }
-
     if (username != null) {
         user.innerHTML = "Name:" + username;
         sessionStorage.setItem('username', username);
     }else{
         user.innerHTML = "Name: anonymous"; 
     }
+    usernam.value = username;
 }
 
 // Event listener for the options
+
 opt1.addEventListener('click',function(){
     userSelection = opt1.textContent
-    // correctAnswer(userSelection)
     errors(userSelection)
     document.getElementById('opt1').disabled = true;
 })
 opt2.addEventListener('click',function(){
     userSelection = opt2.textContent
-    // correctAnswer(userSelection)
     errors(userSelection)
     document.getElementById('opt2').disabled = true;
 })
 opt3.addEventListener('click',function(){
     userSelection = opt3.textContent
-    // correctAnswer(userSelection)
     errors(userSelection)
     document.getElementById('opt3').disabled = true;
 })
 
 
-// Function for the next question
 let counter = 0;
 next.onclick = (function outer() {
     return function inner() {
@@ -288,6 +293,12 @@ next.onclick = (function outer() {
             document.getElementById('opt2').disabled = true;
             document.getElementById('opt3').disabled = true;
             questArea.style.display = "none";
+            firebase.database().ref("user").push({
+                username: usernam.value,
+                score: score,
+                error: error,
+                time: time
+            });
         }
     };
 })();
