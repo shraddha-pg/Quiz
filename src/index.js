@@ -223,6 +223,7 @@ let currentItem = 0;
 let userSelection = ""
 let id = null;
 
+
 function setData(){
     let choice = questions[currentItem];
     img.src = choice.img;
@@ -234,6 +235,7 @@ function setData(){
     questArea.classList.remove('hide');
     show.classList.add('hide');
 }
+
 
 function askName() {
     let username = sessionStorage.getItem('username');
@@ -248,7 +250,9 @@ function askName() {
         user.innerHTML = "Name: anonymous"; 
     }
     usernam.value = username;
+    sessionStorage.clear()
 }
+
 
 // Event listener for the options
 
