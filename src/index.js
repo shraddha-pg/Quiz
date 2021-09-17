@@ -293,9 +293,6 @@ next.onclick = (function outer() {
             <h3>Your Errors are:${error}❌</h3>
             <button class="btn" onclick="location.reload(true)">Play again</button>`;
             showscore.classList.remove('scorearea');
-            document.getElementById('opt1').disabled = true;
-            document.getElementById('opt2').disabled = true;
-            document.getElementById('opt3').disabled = true;
             questArea.style.display = "none";
             firebase.database().ref("user").push({
                 username: usernam.value,
